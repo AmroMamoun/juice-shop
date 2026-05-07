@@ -27,3 +27,24 @@ name: Install Semgrep
       
 name: Run Semgrep SAST
       run: semgrep scan --config auto .
+name: Semgrep SAST Scan
+
+# الخطوة 4: تشغيل الـ workflow عند كل عملية Push
+on: [push]
+
+jobs:
+  semgrep-scan:
+    name: Run Semgrep
+    runs-on: ubuntu-latest
+    steps:
+      # سحب الكود من المستودع
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # تنزيل أداة Semgrep
+      - name: Install Semgrep
+        run: python -m pip install semgrep
+
+      # الخطوة 5: تشغيل الفحص وطباعة النتائج على الـ Console
+      - name: Run Semgrep SAST
+        run: semgrep scan --config auto
